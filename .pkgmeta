@@ -1,0 +1,6 @@
+package-as: FlightMapLarger
+
+ignore:
+  - .gitignore
+  - .pkgmeta
+  - README.md
