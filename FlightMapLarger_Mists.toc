@@ -1,4 +1,4 @@
-## Interface: 50500,40402
+## Interface: 50500
 ## Title: FlightMap|T137032:16|t Larger |T293773:16|t
 ## Notes: Enlarge the FlightMap to give Taxi Nodes some separation|nand let you actually click the one you want
 ## Author: Road-block
