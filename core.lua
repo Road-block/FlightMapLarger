@@ -1,6 +1,11 @@
 local addonName, addon = ...
 
-FlightMapLargerDB = FlightMapLargerDB or {size=1.5}
+addon.IsMoPC = WOW_PROJECT_ID and WOW_PROJECT_ID == WOW_PROJECT_MISTS_CLASSIC
+local minset, maxset, defset = 1.0, 2.0, 1.5
+if addon.IsMoPC then
+  minset,maxset,defset = 0.8, 1.5, 1.2
+end
+FlightMapLargerDB = FlightMapLargerDB or {size=defset}
 local _p = {}
 _p.defaults = {
   width = 384,
@@ -11,16 +16,22 @@ _p.defaults = {
   global_taximap_w = 316,
   global_taximap_h = 352,
 }
+if addon.IsMoPC then
+  _p.defaults.width = 590
+  _p.defaults.height = 608
+  _p.defaults.global_taximap_w = 580
+  _p.defaults.global_taximap_h = 580
+end
 local function SetupTaxiFrame()
   if FlightMapLargerDB.size == 1.0 then return end
   if TaxiFrame then
-    local padx, pady = _p.defaults.width*(FlightMapLargerDB.size or 1.5)-_p.defaults.width, _p.defaults.height*(FlightMapLargerDB.size or 1.5)-_p.defaults.height
-    TaxiFrame:SetWidth(_p.defaults.width*(FlightMapLargerDB.size or 1.5))
-    TaxiFrame:SetHeight(_p.defaults.height*(FlightMapLargerDB.size or 1.5))
+    local padx, pady = _p.defaults.width*(FlightMapLargerDB.size or defset)-_p.defaults.width, _p.defaults.height*(FlightMapLargerDB.size or 1.5)-_p.defaults.height
+    TaxiFrame:SetWidth(_p.defaults.width*(FlightMapLargerDB.size or defset))
+    TaxiFrame:SetHeight(_p.defaults.height*(FlightMapLargerDB.size or defset))
     TAXI_MAP_WIDTH = _p.defaults.global_taximap_w+padx
     TAXI_MAP_HEIGHT = _p.defaults.global_taximap_h+pady
-    TaxiMap:SetWidth(TAXI_MAP_WIDTH)
-    TaxiMap:SetHeight(TAXI_MAP_HEIGHT)
+--    TaxiMap:SetWidth(TAXI_MAP_WIDTH)
+--    TaxiMap:SetHeight(TAXI_MAP_HEIGHT)
     TaxiRouteMap:SetWidth(TAXI_MAP_WIDTH)
     TaxiRouteMap:SetHeight(TAXI_MAP_HEIGHT)
     for i, region in ipairs({TaxiFrame:GetRegions()}) do
@@ -65,10 +76,10 @@ frame:RegisterEvent("TAXIMAP_OPENED")
 local loader = CreateFrame("Frame")
 loader.AddonLoaded = function(self,event,...)
   if ... == addonName then
-    FlightMapLargerDB = FlightMapLargerDB or {size=1.5}
+    FlightMapLargerDB = FlightMapLargerDB or {size=defset}
     loader:UnregisterEvent("ADDON_LOADED")
     C_Timer.After(5,function()
-      print("FlightMap Larger: /fml N [1.1 to 2.0]")
+      print(format("FlightMap Larger: /fml N [%.1F to %.1F]",minset,maxset))
     end)
   end
 end
@@ -114,8 +125,8 @@ end
 local addonNameU, addonNameL = addonName:upper(), addonName:lower()
 SlashCmdList[addonNameU] = function(input)
   local size = tonumber(input or "")
-  if (not size) or (size < 1.0) or (size > 2.0) then
-    print("FlightMap Larger: /fml N [1.1 to 2.0])")
+  if (not size) or (size < minset) or (size > maxset) then
+    print(format("FlightMap Larger: /fml N [%.1F to %.1F])",minset,maxset))
     return
   else
     if FlightMapLargerDB.size ~= size then

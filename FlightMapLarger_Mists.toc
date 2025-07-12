@@ -2,7 +2,7 @@
 ## Title: FlightMap|T137032:16|t Larger |T293773:16|t
 ## Notes: Enlarge the FlightMap to give Taxi Nodes some separation|nand let you actually click the one you want
 ## Author: Road-block
-## Version: 1.0.1
+## Version: 1.1.0
 ## IconTexture: 137032
 ## SavedVariables: FlightMapLargerDB
 
